@@ -12,7 +12,9 @@ async function main(argv: string[]): Promise<void> {
   }
   const simpleResults = await fetchSimpleResults(fromDate, toDate);
   const results = await fetchDetailedResults(simpleResults);
-  console.log(formatCSV(results));
+  console.log(
+    formatCSV(results.sort((x, y) => x.start.unix() - y.start.unix()))
+  );
 }
 
 function formatCSV(results: DetailedResult[]): string {
