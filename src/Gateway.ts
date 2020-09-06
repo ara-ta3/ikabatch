@@ -80,10 +80,10 @@ async function fetchDetailedResult(
   const playerTable = page.window.document.getElementById(
     "players"
   ) as HTMLTableElement;
-  const playerTbody = table.childNodes[0] as HTMLTableSectionElement;
+  const playerTbody = playerTable.tBodies[0];
   const players: Player[] = Array.from(playerTbody.rows)
     .filter((r) => {
-      return r.cells.item(0).className === "bg-his";
+      return r.cells.item(0).classList.contains("bg-his");
     })
     .map((r) => {
       return {
