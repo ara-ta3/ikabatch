@@ -1,7 +1,7 @@
 import * as moment from "moment";
 import fetch from "node-fetch";
 import { JSDOM } from "jsdom";
-import { DetailedResult, SimpleResult } from "./Contract";
+import { DetailedResult, Player, SimpleResult } from "./Contract";
 
 const statInk = "https://stat.ink";
 
@@ -76,8 +76,24 @@ async function fetchDetailedResult(
     format
   );
   const end = moment(tbody.rows[15].cells[1].childNodes[0].textContent, format);
+
+  const playerTable = page.window.document.getElementById(
+    "players"
+  ) as HTMLTableElement;
+  const playerTbody = table.childNodes[0] as HTMLTableSectionElement;
+  const players: Player[] = Array.from(playerTbody.rows)
+    .filter((r) => {
+      return r.cells.item(0).className === "bg-his";
+    })
+    .map((r) => {
+      return {
+        name: r.cells.item(1).textContent,
+        weapon: r.cells.item(2).textContent,
+      } as Player;
+    });
+
   return {
-    players: [],
+    players: players,
     rule: rule,
     stage: stage,
     win: simpleResult.win,
