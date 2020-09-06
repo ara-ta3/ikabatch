@@ -1,5 +1,5 @@
 import * as moment from "moment";
-import { fetchSimpleResults } from "./Gateway";
+import { fetchDetailedResults, fetchSimpleResults } from "./Gateway";
 
 async function main(argv: string[]): Promise<void> {
   const from = argv[2];
@@ -10,7 +10,8 @@ async function main(argv: string[]): Promise<void> {
     throw new Error(`date format is invalid. from = ${from} to = ${to}`);
   }
   const simpleResults = await fetchSimpleResults(fromDate, toDate);
-  console.log(simpleResults);
+  const results = await fetchDetailedResults(simpleResults);
+  console.log(results);
 }
 
 main(process.argv).catch((e) => console.error(e));
